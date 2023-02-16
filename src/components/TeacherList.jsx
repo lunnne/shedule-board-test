@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import TeacherCard from './TeacherCard';
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
@@ -8,7 +8,7 @@ export default function TeacherList({ value, onFilterClick, options }) {
   const [selected, setSelected] = useState([]);
 
   return (
-    <>
+    <div className='my-20'>
       <button value={value} onClick={onFilterClick}>
         {value}
       </button>
@@ -16,6 +16,6 @@ export default function TeacherList({ value, onFilterClick, options }) {
       <div className="flex">
         <TeacherCard items={selected} />
       </div>
-    </>
+    </div>
   );
 }

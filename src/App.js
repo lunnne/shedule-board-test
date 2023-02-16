@@ -7,7 +7,6 @@ import TimeTable from './components/TimeTable';
 function App() {
   const titles = ['teacher', 'socialworker', 'assistant'];
   const [list, setList] = useState([]);
-  const [selected, setSelected] = useState([]);
   const [options, setOptions] = useState([]);
   const [filteredList, setFilteredList] = useState([]);
 
@@ -19,6 +18,7 @@ function App() {
 
 
   const getFilteredItem = (title) => list.filter((item) => item.title === title);
+
 
   const handleFilterClick = (e) => {
     const filter = e.target.value;
