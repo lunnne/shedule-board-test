@@ -6,15 +6,26 @@ import { v4 as uuidv4 } from 'uuid';
 
 const animatedComponents = makeAnimated();
 
+const getDatafromLocalStorage = (value) => {
+  const data = localStorage.getItem(value);
+  if (data) {
+    return JSON.parse(data);
+  } else {
+    return [];
+  }
+};
+
 export default function TeacherList({ value, list }) {
   const [selected, setSelected] = useState([]);
   const [toggle, setToggle] = useState('');
-  const [itemList, setItemList] = useState([{ value: 'Maria', label: 'Maria', name: 'Maria', title: 'teacher', subject: 'math' }]);
+  const [itemList, setItemList] = useState([]);
 
   const filteredList = list.filter((item) => item.title === value);
   const options = filteredList.map((item) => {
     return { value: item.name, label: item.name, ...item };
   });
+
+  const filteredLS = itemList.filter((item) => item.title === value);
 
   const handleToggleOpen = (e) => {
     setToggle(e.target.value);
@@ -24,15 +35,30 @@ export default function TeacherList({ value, list }) {
     const targetTitle = e.target.value;
     localStorage.setItem(`${targetTitle}`, JSON.stringify(selected));
     setToggle('');
-    setSelected([]);
+    showItems();
   };
+
+  const showItems = () => {
+    const teacherList = getDatafromLocalStorage('teacher');
+    const assistantList = getDatafromLocalStorage('assistant');
+    const socialworkerList = getDatafromLocalStorage('socialworker');
+    setItemList(() => [...teacherList, ...assistantList, ...socialworkerList]);
+  };
+
+  useEffect(() => {
+    showItems();
+  }, []);
 
   return (
     <div className="my-20">
-      <button value={value} className="text-2xl" onClick={handleToggleOpen}>
+      <button value={value} className="text-2xl my-5" onClick={handleToggleOpen}>
         {value}
       </button>
-     {toggle==''&&<TeacherCard items={itemList}/>}
+      {toggle === '' && (
+        <div className="flex">
+          <TeacherCard items={filteredLS} key={uuidv4()} />
+        </div>
+      )}
       {value === toggle && (
         <div>
           <div className="flex">
@@ -42,7 +68,7 @@ export default function TeacherList({ value, list }) {
             </button>
           </div>
           <div className="flex">
-            <TeacherCard items={selected} localItem={itemList} key={uuidv4()} />
+            <TeacherCard items={selected} key={uuidv4()} />
           </div>
         </div>
       )}
