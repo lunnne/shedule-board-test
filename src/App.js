@@ -6,18 +6,15 @@ import TimeTable from './components/TimeTable';
 
 function App() {
   const [list, setList] = useState([]);
- 
-
+  
   useEffect(() => {
     fetch('/data/teachersInfo.json')
       .then((res) => res.json())
       .then((data) => setList(data));
-      console.log(list);
   }, []);
 
   return  <>
       <Header />
-      <TimeTable />
       <TeacherList value='teacher' list={list} />
       <TeacherList value='socialworker' list={list} />
       <TeacherList value='assistant' list={list}/>
